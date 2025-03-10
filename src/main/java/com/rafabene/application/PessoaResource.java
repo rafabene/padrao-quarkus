@@ -9,6 +9,7 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.panache.common.Sort.Direction;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -22,6 +23,7 @@ public class PessoaResource {
     PessoaRepository pessoaRepository;
 
     @POST
+    @Transactional
     public Response<Pessoa> criarPessoa(Pessoa pessoa) {
         pessoaRepository.persist(pessoa);
         return new Response<Pessoa>(pessoa, "Pessoa criada com sucesso", Response.Status.SUCESS);

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @JsonPropertyOrder({ "status", "message", "data", "errors" })
 public class Response<T> {
 
-    public enum Status {
+    public static enum Status {
 
         SUCESS("success"), ERROR("error");
 
@@ -28,9 +28,14 @@ public class Response<T> {
 
     }
 
-    public class FieldError {
+    public static class FieldError {
         private String field;
         private String message;
+
+        public FieldError(String field, String message) {
+            this.field = field;
+            this.message = message;
+        }
 
         public String getField() {
             return field;
@@ -52,6 +57,11 @@ public class Response<T> {
         this.status = status;
     }
 
+    public Response(String message, Status status) {
+        this(null, message, status);
+    }
+
+    @JsonInclude(Include.NON_NULL)
     public T getData() {
         return data;
     }

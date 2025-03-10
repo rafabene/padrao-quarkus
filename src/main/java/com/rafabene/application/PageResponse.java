@@ -15,7 +15,8 @@ public class PageResponse<T> extends Response<T> {
         super(data, message, status);
         this.page = page;
         this.totalItems = totalItems;
-        this.pageSize = (int) Math.ceil((double) totalItems / pageSize);
+        this.pageSize = pageSize;
+        this.totalPages = (int) Math.ceil((double) totalItems / pageSize);
     }
 
     public int getPage() {
