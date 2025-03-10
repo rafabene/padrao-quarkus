@@ -1,12 +1,13 @@
 package com.rafabene.application;
 
-import java.io.ObjectInputFilter.Status;
 import java.util.List;
 
 import com.rafabene.dominio.entity.Pessoa;
 import com.rafabene.dominio.repositorio.PessoaRepository;
 
-import io.smallrye.mutiny.Uni;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Sort;
+import io.quarkus.panache.common.Sort.Direction;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -29,12 +30,25 @@ public class PessoaResource {
     @GET
     public PageResponse<List<Pessoa>> listarPessoas(
             @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("size") @DefaultValue("5") int size) {
-        long count = pessoaRepository.count();
-        pessoaRepository.findAll().page(page, size);
-        PageResponse pr = new PageResponse<List<Pessoa>>(pessoaRepository.listAll(), "Pessoas listadas com sucesso",
-                Response.Status.SUCESS, page, size, (int) Math.ceil(count / size), count);
-        return null;
+            @QueryParam("size") @DefaultValue("5") int size,
+            @QueryParam("order") @DefaultValue("nome") String order,
+            @QueryParam("orderType") @DefaultValue("ASC") String direction) {
+
+        Direction orderType = Direction.Ascending;
+        if (direction.equalsIgnoreCase("DESC")) {
+            orderType = Direction.Descending;
+        } else {
+            orderType = Direction.Ascending;
+        }
+        long total = pessoaRepository.count();
+        PanacheQuery<Pessoa> q = pessoaRepository
+                .findAll(Sort
+                        .by(order).direction(orderType))
+                .page(page, size);
+        var listPessoas = q.list();
+        var pr = new PageResponse<List<Pessoa>>(listPessoas, "Pessoas listadas com sucesso",
+                Response.Status.SUCESS, page, size, total);
+        return pr;
     }
 
 }

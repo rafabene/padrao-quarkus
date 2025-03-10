@@ -1,5 +1,8 @@
 package com.rafabene.application;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "status", "message", "page", "totalPages", "pageSize", "totalItems", "data" })
 public class PageResponse<T> extends Response<T> {
 
     private int page;

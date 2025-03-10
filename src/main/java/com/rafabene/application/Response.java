@@ -1,11 +1,31 @@
 package com.rafabene.application;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+@JsonPropertyOrder({ "status", "message", "data", "errors" })
 public class Response<T> {
 
     public enum Status {
-        SUCESS, ERROR
+
+        SUCESS("success"), ERROR("error");
+
+        private String name;
+
+        Status(String name) {
+            this.name = name;
+        }
+
+        @JsonValue
+        public String getName() {
+            return name;
+        }
+
     }
 
     public class FieldError {
@@ -24,7 +44,7 @@ public class Response<T> {
     private T data;
     private String message;
     private Status status;
-    private List<FieldError> errors = List.of();
+    private List<FieldError> errors;
 
     public Response(T data, String message, Status status) {
         this.data = data;
@@ -44,7 +64,11 @@ public class Response<T> {
         return status;
     }
 
+    @JsonInclude(Include.NON_EMPTY)
     public List<FieldError> getErrors() {
+        if (errors == null) {
+            errors = new ArrayList<>();
+        }
         return errors;
     }
 
