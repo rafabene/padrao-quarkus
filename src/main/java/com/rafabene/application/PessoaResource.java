@@ -31,7 +31,7 @@ public class PessoaResource {
 
     @GET
     public PageResponse<List<Pessoa>> listarPessoas(
-            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("page") @DefaultValue("1") int page,
             @QueryParam("size") @DefaultValue("5") int size,
             @QueryParam("order") @DefaultValue("nome") String order,
             @QueryParam("orderType") @DefaultValue("ASC") String direction) {
@@ -46,9 +46,9 @@ public class PessoaResource {
         PanacheQuery<Pessoa> q = pessoaRepository
                 .findAll(Sort
                         .by(order).direction(orderType))
-                .page(page, size);
+                .page(page - 1, size);
         var listPessoas = q.list();
-        var pr = new PageResponse<List<Pessoa>>(listPessoas, "Pessoas listadas com sucesso",
+        var pr = new PageResponse<List<Pessoa>>(listPessoas, "Pessoas obtidas com sucesso",
                 Response.Status.SUCESS, page, size, total);
         return pr;
     }

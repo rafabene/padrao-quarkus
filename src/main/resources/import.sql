@@ -1,5 +1,5 @@
 INSERT INTO pessoa (cpf, id, nome, email) VALUES
-('12345678901', '550e8400-e29b-41d4-a716-446655440000', 'Ana Souza', 'ana.souza@email.com'),
+('12345678901', '550e8400-e29b-41d4-a716-446655440000', 'Ana Silva', 'ana.souza@email.com'),
 ('98765432100', '550e8400-e29b-41d4-a716-446655440001', 'Carlos Mendes', 'carlos.mendes@email.com'),
 ('45612378900', '550e8400-e29b-41d4-a716-446655440002', 'Mariana Lima', 'mariana.lima@email.com'),
 ('74185296300', '550e8400-e29b-41d4-a716-446655440003', 'Fernando Rocha', 'fernando.rocha@email.com'),
